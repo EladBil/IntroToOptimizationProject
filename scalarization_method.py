@@ -34,14 +34,14 @@ def parse_constraints(line):
         objectives[index] = (objectives[index][:-1], objectives[index][-1])
     return objectives
 
+
 def add_constraint(variables, obj_fun):
-    
+
     return
 
 
 def parse_objectives(line,n,coe_arr):
     obj_deli = ';'
-    coe_deli = ','
     objectives = line.strip().split(obj_deli)
     for index, objective in enumerate(objectives):
         objectives[index] = objective.split(',')

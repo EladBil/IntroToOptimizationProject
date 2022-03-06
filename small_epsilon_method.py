@@ -29,7 +29,6 @@ def add_constraint(variables, obj_fun):
 def parse_objectives(line):
 
     obj_deli = ';'
-    coe_deli = ','
     objectives = line.strip().split(obj_deli)
     
     for index, objective in enumerate(objectives):
