@@ -46,9 +46,9 @@ def get_problem_data(file_path):
         constraints = parse_constraints(file.readline())
 
         
-        print(num_of_variables)
-        print(objectives_functions_arr)
-        print(constraints)
+        # print(num_of_variables)
+        # print(objectives_functions_arr)
+        # print(constraints)
 
         return num_of_variables, objectives_functions_arr, constraints
 
@@ -73,7 +73,7 @@ def init_problem(variables, obj_fun_arr, constraints, i):
     linear_problem += pulp.LpAffineExpression(
         [(variables[i], obj_fun_arr[i]) for i in range(len(variables))])
     
-    print(linear_problem.objective)
+    # print(linear_problem.objective)
     
     for index, constraint in enumerate(constraints):
         expression = pulp.LpAffineExpression(

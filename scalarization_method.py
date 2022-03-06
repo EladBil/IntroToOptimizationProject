@@ -5,20 +5,20 @@ Created on Thu Feb 24 19:19:14 2022
 @author: miche
 """
 
+import numpy as np
 import pulp
 import sys
 
 
 def option_a_equal_weights(n_variables):
-    coe_arr= []
+    coe_arr = []
     for i in range(n_variables):
         coe_arr.append(1/n_variables)
     return coe_arr
 
-def option_a_not_equal_weights(n_variables, alpha):
-    coe_arr= []
-    for i in range(n_variables):
-        coe_arr.append(1/n_variables)
+
+def random_weights(n_variables):
+    coe_arr = np.random.dirichlet(np.ones(n_variables),size=1)[0]
     return coe_arr
 
 
@@ -50,18 +50,21 @@ def parse_objectives(line,n,coe_arr):
     return objectives
 
 
-def get_problem_data(file_path):
+def get_problem_data(file_path, weights=None):
     try:
         file = open(file_path, "+r")
         num_of_variables = int(file.readline())
-        coe_arr = option_a_equal_weights(num_of_variables)
+        if weights is None:
+            coe_arr = random_weights(num_of_variables)
+        else:
+            coe_arr = weights
         objectives_functions_arr = parse_objectives(file.readline(),num_of_variables,coe_arr)
         constraints = parse_constraints(file.readline())
 
         
-        print(num_of_variables)
-        print(objectives_functions_arr)
-        print(constraints)
+        # print(num_of_variables)
+        # print(objectives_functions_arr)
+        # print(constraints)
 
         return num_of_variables, objectives_functions_arr, constraints
 
@@ -106,32 +109,18 @@ def init_problem(variables, obj_fun_arr, constraints, n):
     return linear_problem
 
 
-def main():
-    file_path = sys.argv[1]
-    n_variables, obj_fun_arr, constraints = get_problem_data(file_path)
-    variables = get_variables(n_variables)
-    print(variables)
-    new_constraints =[]
+# def main():
+#     file_path = sys.argv[1]
+#     n_variables, obj_fun_arr, constraints = get_problem_data(file_path)
+#     variables = get_variables(n_variables)
+#     print(variables)
+#     new_constraints =[]
      
-    lp = init_problem(variables, obj_fun_arr, constraints,  n_variables)
-    solution=lp.solve()
-   
-
-   # solution = lp.solve()
-        
-        
-    #first_lp = init_problem(variables, obj_fun_arr[0], constraints, 1)
-    #solution = first_lp.solve()
+#     lp = init_problem(variables, obj_fun_arr, constraints,  n_variables)
+#     solution=lp.solve()
+  
     
-    #print(type(lp.objective))
-   
-    
-    print(str(pulp.LpStatus[solution])+" ; max value = "+str(pulp.value(lp.objective))+
-      " ; x1_opt = "+str(pulp.value(variables[0]))+
-      " ; x2_opt = "+str(pulp.value(variables[1])))
-     #" ; x3_opt = "+str(pulp.value(variables[2])))
-    
-    
-
-if __name__ == '__main__':
-    main()
+#     print(str(pulp.LpStatus[solution])+" ; max value = "+str(pulp.value(lp.objective))+
+#       " ; x1_opt = "+str(pulp.value(variables[0]))+
+#       " ; x2_opt = "+str(pulp.value(variables[1])))
+#      #" ; x3_opt = "+str(pulp.value(variables[2])))

@@ -1,3 +1,6 @@
+import pulp
+
+
 def parse_objectives(line,n,coe_arr):
     obj_deli = ';'
     objectives = line.strip().split(obj_deli)
@@ -21,20 +24,11 @@ def parse_constraints(line):
     return objectives
 
 
-def get_problem_data(file_path):
-    try:
-        file = open(file_path, "+r")
-        num_of_variables = int(file.readline())
-        coe_arr = option_a_equal_weights(num_of_variables)
-        objectives_functions_arr = parse_objectives(file.readline(),num_of_variables,coe_arr)
-        constraints = parse_constraints(file.readline())
+def get_variables(n_variables):
 
-        
-        print(num_of_variables)
-        print(objectives_functions_arr)
-        print(constraints)
+    vars = []
+    for i in range(n_variables):
+        name = 'x' + str(i)
+        vars.append(pulp.LpVariable(name,lowBound = 0) )
 
-        return num_of_variables, objectives_functions_arr, constraints
-
-    except:
-        print("File not found!!!")
+    return vars
